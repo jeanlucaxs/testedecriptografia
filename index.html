@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Segurança de Mídia | MSE & Blob Camouflage</title>
+    <style>
+        :root {
+            --bg-principal: #0c0c0c;
+            --bg-card: #181818;
+            --verde-spotify: #1DB954;
+            --texto-claro: #ffffff;
+            --texto-escuro: #b3b3b3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        /* Card do Player */
+        .player-card {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            text-align: center;
+            margin-bottom: 30px;
+            border: 1px solid #282828;
+        }
+
+        h1 {
+            color: var(--verde-spotify);
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--texto-escuro);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        audio {
+            width: 100%;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        .status-box {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #00ff66;
+            background: #000000;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            border-left: 4px solid var(--verde-spotify);
+            text-align: left;
+        }
+
+        /* Seção de Explicação Técnica */
+        .info-section {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #282828;
+        }
+
+        h2 {
+            color: var(--texto-claro);
+            font-size: 18px;
+            border-bottom: 1px solid #282828;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        p {
+            color: var(--texto-escuro);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            background-color: #282828;
+            color: var(--verde-spotify);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        ul {
+            padding-left: 20px;
+            color: var(--texto-escuro);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        strong {
+            color: var(--texto-claro);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="player-card">
+        <h1>Demonstração de Segurança de Mídia</h1>
+        <div class="subtitle">Simulação de mascaramento de link via Buffer de Memória Dinâmica</div>
+        
+        <audio id="playerEscondido" controls controlsList="nodownload" oncontextmenu="return false;"></audio>
+        
+        <div id="logStatus" class="status-box">> Inicializando sistema...</div>
+    </div>
+
+    <div class="info-section">
+        <h2>Como este teste de segurança funciona?</h2>
+        <p>Se você abrir o painel de desenvolvedor do navegador (<span class="badge">F12</span>) e tentar inspecionar o player acima ou monitorar a rede, você notará algo incomum. Este projeto foi programado para demonstrar técnicas básicas de <strong>proteção contra engenharia reversa e cópia direta de arquivos</strong>.</p>
+        
+        <ul>
+            <li><strong>Mascaramento por Blob:</strong> Em vez de apontar o player para um arquivo direto como <span class="badge">musica.mp3</span>, o código gera um link virtual temporário iniciado em <span class="badge">blob:</span>. Esse endereço só existe na memória RAM desta aba e dá erro se copiado para outro lugar.</li>
+            <li><strong>Sumiço na Aba Network (Rede):</strong> Se você limpar o histórico do F12 e clicar em "Mídia", verá que nenhum arquivo de áudio é listado. O download do arquivo original ocorre de forma invisível via JavaScript em formato binário bruto (<span class="badge">ArrayBuffer</span>).</li>
+            <li><strong>Alimentação por Fragmentos (MSE):</strong> Utilizando a API <span class="badge">MediaSource Extensions</span> do HTML5, o navegador costura os dados binários direto na memória, alimentando o player aos poucos.</li>
+            <li><strong>Bloqueio de Interface:</strong> O menu de clique direito sobre o player foi desativado e o botão nativo de download do navegador foi ocultado via código.</li>
+        </ul>
+
+        <p style="font-size: 12px; color: #777; margin-bottom: 0; text-align: center;">
+            Nota técnica: Este projeto serve como um modelo didático. Sistemas de grande porte (como o Spotify) elevam essa segurança adicionando chaves de criptografia DRM (Widevine/FairPlay) aos fragmentos de rede.
+        </p>
+    </div>
+
+</div>
+
+<script>
+    const audio = document.getElementById('playerEscondido');
+    const logStatus = document.getElementById('logStatus');
+
+    // Nome exato do arquivo que você subiu no GitHub
+    const urlAudioOriginal = "Jaunty Gumption.mp3"; 
+
+    // Inicializa a API MediaSource
+    const mediaSource = new MediaSource();
+    
+    // Cria a URL temporária do Blob na memória RAM
+    audio.src = URL.createObjectURL(mediaSource);
+
+    mediaSource.addEventListener('sourceopen', function() {
+        logStatus.innerText = "> Canal MediaSource estabelecido na memória RAM.";
+        
+        // Define que vamos processar um arquivo de áudio mpeg
+        const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+
+        logStatus.innerText = "> Baixando dados binários ocultos via Fetch API...";
+
+        // Faz a requisição em background
+        fetch(urlAudioOriginal)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Arquivo de áudio não encontrado no repositório.");
+                }
+                return response.arrayBuffer();
+            })
+            .then(dadosBrutos => {
+                logStatus.innerText = "> Sucesso: Dados carregados. Fragmentando e camuflando no buffer...";
+                
+                // Injeta o arquivo criptografado/bruto direto no motor de áudio do navegador
+                sourceBuffer.appendBuffer(dadosBrutos);
+
+                sourceBuffer.addEventListener('updateend', function() {
+                    mediaSource.endOfStream();
+                    logStatus.innerText = "> Proteção Ativa: Link original mascarado. Tente inspecionar com o F12!";
+                });
+            })
+            .catch(erro => {
+                logStatus.style.color = "#ff3333";
+                logStatus.innerText = "> Erro no carregamento: " + erro.message;
+                console.error(erro);
+            });
+    });
+</script>
+
+</body>
+</html>
