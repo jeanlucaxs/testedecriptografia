@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratório de Segurança de Mídia | MSE & Blob Camouflage</title>
+    <title>Laboratório Avançado de Segurança de Mídia</title>
     <style>
         :root {
-            --bg-principal: #0c0c0c;
-            --bg-card: #181818;
-            --verde-spotify: #1DB954;
+            --bg-principal: #0a0a0c;
+            --bg-card: #16161a;
+            --cor-seguranca: #00e676;
             --texto-claro: #ffffff;
-            --texto-escuro: #b3b3b3;
+            --texto-escuro: #94a3b8;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg-principal);
             color: var(--texto-claro);
             margin: 0;
@@ -24,94 +24,50 @@
             align-items: center;
         }
 
-        .container {
-            width: 100%;
-            max-width: 700px;
-        }
+        .container { width: 100%; max-width: 650px; }
 
-        /* Card do Player */
         .player-card {
             background-color: var(--bg-card);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             text-align: center;
-            margin-bottom: 30px;
-            border: 1px solid #282828;
-        }
-
-        h1 {
-            color: var(--verde-spotify);
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: var(--texto-escuro);
-            font-size: 14px;
             margin-bottom: 25px;
+            border: 1px solid #2d2d3d;
         }
 
-        audio {
-            width: 100%;
-            outline: none;
-            margin-top: 10px;
-        }
+        h1 { color: var(--cor-seguranca); font-size: 22px; margin-top: 0; }
+        .track-title { font-size: 18px; font-weight: bold; margin-top: 10px; }
+        .track-artist { color: var(--texto-escuro); font-size: 13px; margin-bottom: 20px; }
 
-        .status-box {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #00ff66;
+        audio { width: 100%; outline: none; }
+
+        .console-box {
+            margin-top: 25px;
+            font-size: 11px;
+            color: #64ffda;
             background: #000000;
-            padding: 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', Courier, monospace;
-            border-left: 4px solid var(--verde-spotify);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid var(--cor-seguranca);
             text-align: left;
+            max-height: 100px;
+            overflow-y: auto;
         }
 
-        /* Seção de Explicação Técnica */
         .info-section {
             background-color: var(--bg-card);
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid #282828;
-        }
-
-        h2 {
-            color: var(--texto-claro);
-            font-size: 18px;
-            border-bottom: 1px solid #282828;
-            padding-bottom: 10px;
-            margin-top: 0;
-        }
-
-        p {
-            color: var(--texto-escuro);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #2d2d3d;
             font-size: 14px;
             line-height: 1.6;
-        }
-
-        .badge {
-            background-color: #282828;
-            color: var(--verde-spotify);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 13px;
-        }
-
-        ul {
-            padding-left: 20px;
             color: var(--texto-escuro);
-            font-size: 14px;
-            line-height: 1.8;
         }
 
-        strong {
-            color: var(--texto-claro);
-        }
+        .info-section h2 { color: var(--texto-claro); font-size: 16px; margin-top: 0; }
+        .badge { background: #222530; color: var(--cor-seguranca); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
     </style>
 </head>
 <body>
@@ -119,77 +75,89 @@
 <div class="container">
 
     <div class="player-card">
-        <h1>Demonstração de Segurança de Mídia</h1>
-        <div class="subtitle">Simulação de mascaramento de link via Buffer de Memória Dinâmica</div>
+        <h1>Análise de Segurança de Rede</h1>
+        <div class="track-title">Jaunty Gumption</div>
+        <div class="track-artist">Kevin MacLeod (Mídia Fragmentada em 30 Partes)</div>
         
-        <audio id="playerEscondido" controls controlsList="nodownload" oncontextmenu="return false;"></audio>
+        <audio id="playerMascarado" controls controlsList="nodownload" oncontextmenu="return false;"></audio>
         
-        <div id="logStatus" class="status-box">> Inicializando sistema...</div>
+        <div id="consoleLog" class="console-box">> Sistema pronto. Inicie o áudio para monitorar os fragmentos estocásticos...</div>
     </div>
 
     <div class="info-section">
-        <h2>Como este teste de segurança funciona?</h2>
-        <p>Se você abrir o painel de desenvolvedor do navegador (<span class="badge">F12</span>) e tentar inspecionar o player acima ou monitorar a rede, você notará algo incomum. Este projeto foi programado para demonstrar técnicas básicas de <strong>proteção contra engenharia reversa e cópia direta de arquivos</strong>.</p>
-        
-        <ul>
-            <li><strong>Mascaramento por Blob:</strong> Em vez de apontar o player para um arquivo direto como <span class="badge">musica.mp3</span>, o código gera um link virtual temporário iniciado em <span class="badge">blob:</span>. Esse endereço só existe na memória RAM desta aba e dá erro se copiado para outro lugar.</li>
-            <li><strong>Sumiço na Aba Network (Rede):</strong> Se você limpar o histórico do F12 e clicar em "Mídia", verá que nenhum arquivo de áudio é listado. O download do arquivo original ocorre de forma invisível via JavaScript em formato binário bruto (<span class="badge">ArrayBuffer</span>).</li>
-            <li><strong>Alimentação por Fragmentos (MSE):</strong> Utilizando a API <span class="badge">MediaSource Extensions</span> do HTML5, o navegador costura os dados binários direto na memória, alimentando o player aos poucos.</li>
-            <li><strong>Bloqueio de Interface:</strong> O menu de clique direito sobre o player foi desativado e o botão nativo de download do navegador foi ocultado via código.</li>
-        </ul>
-
-        <p style="font-size: 12px; color: #777; margin-bottom: 0; text-align: center;">
-            Nota técnica: Este projeto serve como um modelo didático. Sistemas de grande porte (como o Spotify) elevam essa segurança adicionando chaves de criptografia DRM (Widevine/FairPlay) aos fragmentos de rede.
-        </p>
+        <h2>O que mudou nesta versão avançada?</h2>
+        <p>Ao inspecionar a aba <span class="badge">Network -> Media</span> no seu F12, o resultado agora será <strong>totalmente nulo</strong>. O arquivo original foi fatiado e embaralhado.</p>
+        <p>A constante do código contém nomes não sequenciais. A ordem real de costura matemática acontece de forma volátil dentro da memória RAM, impedindo o download sequencial automatizado.</p>
     </div>
 
 </div>
 
 <script>
-    const audio = document.getElementById('playerEscondido');
-    const logStatus = document.getElementById('logStatus');
+    const audio = document.getElementById('playerMascarado');
+    const consoleLog = document.getElementById('consoleLog');
 
-    // Nome exato do arquivo que você subiu no GitHub
-    const urlAudioOriginal = "Jaunty Gumption.mp3"; 
+    // 1. LISTA DE ARQUIVOS TOTALMENTE EMBARALHADA (Sem padrão lógico nos nomes)
+    const bancoDeMidia = [
+        "h1r6.mp3", "b4t7.mp3", "x3c7.mp3", "k9f2.mp3", "m8s3.mp3", "f4k6.mp3", 
+        "w9s3.mp3", "v4n9.mp3", "z5q1.mp3", "d9p3.mp3", "z5q8.mp3", "j2g8.mp3", 
+        "p3v9.mp3", "l8m4.mp3", "t2w7.mp3", "v3n9.mp3", "m8l2.mp3", "b9g1.mp3", 
+        "h6c2.mp3", "c7x2.mp3", "r6h1.mp3", "x7r4.mp3", "w7t2.mp3", "g1b8.mp3", 
+        "p3d9.mp3", "k6f4.mp3", "m1a8.mp3", "s3m8.mp3", "n9v4.mp3", "q1z5.mp3"
+    ];
 
-    // Inicializa a API MediaSource
+    // 2. MAPA DE REORDENAÇÃO SECRETO
+    // Esse array guarda a posição correta que cada arquivo ocupa dentro do 'bancoDeMidia' acima.
+    // Ex: O 1º arquivo real é o "k9f2.mp3", que está no índice [3] do array de cima.
+    const mapaSecreto = [
+        3, 21, 26, 12, 18, 1, 6, 11, 8, 13, 15, 19, 23, 5, 9, 14, 20, 17, 28, 29, 16, 2, 17, 25, 24, 22, 0, 4, 7, 10
+    ];
+
+    const totalDeSegmentos = 30;
+
+    // 3. CORE DO STREAMING EM MEMÓRIA (MSE)
     const mediaSource = new MediaSource();
-    
-    // Cria a URL temporária do Blob na memória RAM
     audio.src = URL.createObjectURL(mediaSource);
 
     mediaSource.addEventListener('sourceopen', function() {
-        logStatus.innerText = "> Canal MediaSource estabelecido na memória RAM.";
-        
-        // Define que vamos processar um arquivo de áudio mpeg
         const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+        
+        function injetarProximoPedaco(index) {
+            if (index >= totalDeSegmentos) {
+                mediaSource.endOfStream();
+                printLog("Fluxo de streaming concluído com sucesso. Áudio unificado na memória RAM.");
+                return;
+            }
 
-        logStatus.innerText = "> Baixando dados binários ocultos via Fetch API...";
+            // Descobre o arquivo correto consultando o mapa oculto
+            const idDoArquivo = bancoDeMidia[mapaSecreto[index]];
+            printLog(`Buscando fragmento camuflado [${index}/29]: ${idDoArquivo}`);
 
-        // Faz a requisição em background
-        fetch(urlAudioOriginal)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Arquivo de áudio não encontrado no repositório.");
-                }
-                return response.arrayBuffer();
-            })
-            .then(dadosBrutos => {
-                logStatus.innerText = "> Sucesso: Dados carregados. Fragmentando e camuflando no buffer...";
-                
-                // Injeta o arquivo criptografado/bruto direto no motor de áudio do navegador
-                sourceBuffer.appendBuffer(dadosBrutos);
-
-                sourceBuffer.addEventListener('updateend', function() {
-                    mediaSource.endOfStream();
-                    logStatus.innerText = "> Proteção Ativa: Link original mascarado. Tente inspecionar com o F12!";
+            fetch(idDoArquivo)
+                .then(res => {
+                    if(!res.ok) throw new Error();
+                    return res.arrayBuffer();
+                })
+                .then(buffer Binario => {
+                    sourceBuffer.appendBuffer(bufferBinario);
+                    
+                    sourceBuffer.addEventListener('updateend', function() {
+                        // Quando o navegador terminar de processar o pedaço atual, solicita o próximo
+                        injetarProximoPedaco(index + 1);
+                    }, { once: true });
+                })
+                .catch(() => {
+                    printLog(`[ERRO] Falha crítica ao processar segmento ${idDoArquivo}`);
                 });
-            })
-            .catch(erro => {
-                logStatus.style.color = "#ff3333";
-                logStatus.innerText = "> Erro no carregamento: " + erro.message;
-                console.error(erro);
-            });
+        }
+
+        // Função auxiliar para rolar o console automático
+        function printLog(texto) {
+            consoleLog.innerHTML += `<br>> ${texto}`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+
+        // Dá o gatilho inicial no primeiro fragmento
+        injetarProximoPedaco(0);
     });
 </script>
 
